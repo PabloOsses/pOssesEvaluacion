@@ -1,0 +1,14 @@
+
+<div id="cajaa" *ngFor="let item of Lista">
+    <a [routerLink]="['/editar', item.id]" routerLinkActive="router-link-active" >
+        <ul id="vistadatos" >
+            <li id="titulo">
+                {{item.titulo}} 
+            </li>
+            <li id="descrip">
+                {{item.descripcion}}
+            </li>
+        </ul>
+    </a>
+    <button type="button" (click)="Eliminar(item.id)">Cancelar</button>
+</div>

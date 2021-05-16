@@ -1,0 +1,29 @@
+<form [formGroup]="formulario">
+    <div id="caja0">
+        <ul>
+            <li>
+                <label for="titulo">Titulo</label>
+                <input type="text" formControlName="titulo">
+            </li>
+            <li>
+                <label for="estados">Estado:</label>
+
+                <select name="estados" id="estados" formControlName="estado">
+                    <option value="abierto">Abierto</option>
+                    <option value="proceso">En proceso</option>
+                    <option value="cerrado">Cerrado</option>
+                    
+                </select>
+            </li>
+            <li>
+                <label for="descripcion">Descripcion</label>
+                <textarea name="descripcion" maxlength="150" formControlName="descripcion"></textarea>
+            </li>
+            <li>
+                <a [routerLink]="['/misnotas']" routerLinkActive="router-link-active">
+                    <button type="submit" (click)="Crear()" mat-button color="accent">Actualizar</button>
+                </a>
+            </li>
+        </ul>
+    </div>
+</form>
