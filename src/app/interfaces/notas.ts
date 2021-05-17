@@ -4,7 +4,7 @@ export interface Notas {
     estado:string;
     descripcion:string;
 }
-
+/*
 export const ListaNotas:Array<Notas>=[
     {
         id:0,
@@ -25,3 +25,4 @@ export const ListaNotas:Array<Notas>=[
         descripcion:"Las aventuras de sssdsa d endsm dmesmadd endsmad edejnfs edadfemmff",
     }
 ];
+*/

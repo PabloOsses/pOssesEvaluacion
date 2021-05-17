@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup,FormBuilder, Validators, AbstractControl} from '@angular/forms';
-import {Notas,ListaNotas} from "../../app/interfaces/notas";
+import {Notas} from "../../app/interfaces/notas";
 import {ActivatedRoute} from '@angular/router';
+import {ServicioNotasService} from "../servicio-notas.service";
 @Component({
   selector: 'app-cr-nota',
   templateUrl: './cr-nota.component.html',
@@ -14,12 +15,12 @@ export class CrNotaComponent implements OnInit {
   descripcion:AbstractControl;
  // lista:Array<String>=[];
   /*lista2 tiene la lista de instancias de usuarios */
-  Lista2:Array<Notas>=ListaNotas;
+  Lista2:Array<Notas>=[];
   
-  constructor(private fb:FormBuilder, private route:ActivatedRoute) { 
+  constructor(private fb:FormBuilder, private route:ActivatedRoute,private servicioNota:ServicioNotasService) { 
     this.formulario=this.fb.group({
-      titulo:["",[Validators.required, Validators.maxLength(10)]],
-      estado:["",[Validators.required, Validators.maxLength(10)]],
+      titulo:["",[Validators.required, Validators.maxLength(30)]],
+      estado:["",[Validators.required, Validators.maxLength(30)]],
       /*[,[validaciones(en este caso requerido y maximo de caracteres)]] */
       descripcion:["",[Validators.required, Validators.maxLength(150)]],
       
@@ -35,27 +36,15 @@ export class CrNotaComponent implements OnInit {
     this.estado=this.formulario.get('estado') as FormGroup;
     this.descripcion=this.formulario.get('descripcion') as FormGroup;
     
-    /*
-    this.route.paramMap.subscribe(params=>{
 
-      let intento = params.get("id");
-      let notaId = 0;
-      if(intento!=null){
-        notaId=+intento;
-        console.log("id o algo  " + notaId);
-        this.editar(notaId);
+    this.servicioNota.Consultar().subscribe(datos=>{
+      for(let i=0;i<datos.length;i++){
+        this.Lista2.push(datos[i]);
       }
       
-
+      
+      console.log(datos);
     });
-  }
-  editar(id:number){
-    console.log("EDITATUS FLEX");
-    this.formulario.patchValue({
-      titulo: this.Lista2[id].titulo,
-      estado: this.Lista2[id].estado,
-      descripcion: this.Lista2[id].descripcion
-    })*/
   }
   
   Crear(){
@@ -75,14 +64,23 @@ export class CrNotaComponent implements OnInit {
       
     }
     if(this.Lista2.length!=0){
+      let max=0;
       for(let i=0; i < this.Lista2.length ;i++){
-        if(i == (this.Lista2.length-1)){
+        /*if(i == (this.Lista2.length-1 ) && this.Lista2[i].id!=i+1){
           test.id=i+1;
+        }*/
+        if(max<this.Lista2[i].id){
+          max=this.Lista2[i].id;
         }
       }
+      test.id=max+1;
     }
     //console.log("test id = "+ test.id);
     this.Lista2.push(test);
+    this.servicioNota.Guardar(this.Lista2).subscribe(datos=>{
+      //console.log("lo que estoy recibiendo");  
+      console.log("RECIVO ESTOOOOO"+ datos);
+    });
   
   }
   

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup,FormBuilder, Validators, AbstractControl} from '@angular/forms';
-import {Notas,ListaNotas} from "../../app/interfaces/notas";
+import {Notas} from "../../app/interfaces/notas";
+import {ServicioNotasService} from "../servicio-notas.service";
 import {ActivatedRoute} from '@angular/router';
 @Component({
   selector: 'app-ednotas',
@@ -14,13 +15,13 @@ export class EdnotasComponent implements OnInit {
   descripcion:AbstractControl;
  // lista:Array<String>=[];
   /*lista2 tiene la lista de instancias de usuarios */
-  Lista2:Array<Notas>=ListaNotas;
+  Lista2:Array<Notas>=[];
   idactual:number;
-  constructor(private fb:FormBuilder, private route:ActivatedRoute) {
+  constructor(private fb:FormBuilder, private route:ActivatedRoute,private servicioNota:ServicioNotasService) {
 
     this.formulario=this.fb.group({
-      titulo:["",[Validators.required, Validators.maxLength(10)]],
-      estado:["",[Validators.required, Validators.maxLength(10)]],
+      titulo:["",[Validators.required, Validators.maxLength(30)]],
+      estado:["",[Validators.required, Validators.maxLength(30)]],
       /*[,[validaciones(en este caso requerido y maximo de caracteres)]] */
       descripcion:["",[Validators.required, Validators.maxLength(150)]],
       
@@ -29,15 +30,37 @@ export class EdnotasComponent implements OnInit {
     this.estado=this.formulario.controls["estado"];
     this.descripcion=this.formulario.controls["descripcion"];
     this.idactual=0;
-   }
-
+   
+    
+  }
+   
   ngOnInit(): void {
     this.titulo=this.formulario.get('titulo') as FormGroup;
     this.estado=this.formulario.get('estado') as FormGroup;
     this.descripcion=this.formulario.get('descripcion') as FormGroup;
     
-
+    this.servicioNota.Consultar().subscribe(datos=>{
+      for(let i=0;i<datos.length;i++){
+        this.Lista2.push(datos[i]);
+      }
+      
+      ////
     this.route.paramMap.subscribe(params=>{
+
+        let intento = params.get("id");
+        let notaId = 0;
+        if(intento!=null){
+          notaId=+intento;
+          this.idactual=+intento;
+          console.log("id o algo  " + notaId);
+          this.editar(notaId);
+        }
+      });
+
+      ////
+      console.log("llenado lista2 "+datos);
+    });
+    /*this.route.paramMap.subscribe(params=>{
 
       let intento = params.get("id");
       let notaId = 0;
@@ -47,23 +70,24 @@ export class EdnotasComponent implements OnInit {
         console.log("id o algo  " + notaId);
         this.editar(notaId);
       }
-      
-      /*if(notaId){
-        this.getNota(notaId);
-      }*/
-
-    });
+    });*/
+    
   }
   editar(id:number){
-    console.log("EDITATUS FLEX");
-    this.formulario.patchValue({
-      titulo: this.Lista2[id].titulo,
-      estado: this.Lista2[id].estado,
-      descripcion: this.Lista2[id].descripcion
-    })
+    console.log("EDITAR");
+    console.log("LARGO LISTA  aa  "+this.Lista2.length);
+    for(let i=0; i< this.Lista2.length ;i++){
+      if(this.Lista2[i].id==id){
+        this.formulario.patchValue({
+          titulo: this.Lista2[i].titulo,
+          estado: this.Lista2[i].estado,
+          descripcion: this.Lista2[i].descripcion
+        })
+      }
+    } 
   }
   Crear(){
-    
+    console.log("largo lista 2 en crear "+this.Lista2.length);
     var test: Notas = {
       id:this.idactual,
       titulo:this.titulo.value,
@@ -92,6 +116,10 @@ export class EdnotasComponent implements OnInit {
       }
     })
     //this.Lista2.push(test);
+    this.servicioNota.Guardar(this.Lista2).subscribe(datos=>{
+      //console.log("lo que estoy recibiendo");  
+      console.log("RECIVO ESTOOOOO"+ datos);
+    });
   
   }
 
