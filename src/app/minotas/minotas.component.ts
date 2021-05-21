@@ -8,7 +8,7 @@ import {Router} from "@angular/router"
   styleUrls: ['./minotas.component.scss']
 })
 export class MinotasComponent implements OnInit {
-  //Lista:Array<Notas>=ListaNotas;
+  
    Lista:Array<Notas>=[];
   constructor(private router:Router,private servicioNota:ServicioNotasService) { }
 
@@ -23,21 +23,20 @@ export class MinotasComponent implements OnInit {
     });
   }
   Eliminar(id:number){
-    console.log("nuevo idididid   "+ id);
-    //this.Lista.splice(id,1);
+    /*este metodo sucede cuando se perciona la X de la nota para eliminarla*/
+    
+    /*Se elimina de la lista de notas*/
     this.Lista.forEach((item,index)=>{
       if(id==item.id){
         this.Lista.splice(index,1);
       }
     })
     this.servicioNota.Guardar(this.Lista).subscribe(datos=>{
-      //console.log("lo que estoy recibiendo");  
+      /*Se envia la lista mediante POST, sin la nota eliminada*/  
       console.log("ELIMINO "+ datos);
     });
   
   
   }
-  /*Editar(id:number){
-    this.router.navigate(['/editar',id]);
-  }*/
+  
 }

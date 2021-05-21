@@ -13,10 +13,11 @@ export class EdnotasComponent implements OnInit {
   titulo:AbstractControl;
   estado:AbstractControl;
   descripcion:AbstractControl;
- // lista:Array<String>=[];
-  /*lista2 tiene la lista de instancias de usuarios */
+
+  /*lista2 tiene la lista de notas (el nombre quedo del quiz anterior) */
   Lista2:Array<Notas>=[];
   idactual:number;
+  /*idactual toma el valor del id de la nota a editar  */
   constructor(private fb:FormBuilder, private route:ActivatedRoute,private servicioNota:ServicioNotasService) {
 
     this.formulario=this.fb.group({
@@ -39,45 +40,43 @@ export class EdnotasComponent implements OnInit {
     this.estado=this.formulario.get('estado') as FormGroup;
     this.descripcion=this.formulario.get('descripcion') as FormGroup;
     
+
+    /*Aqui se reciven los datos del metodo GET*/
     this.servicioNota.Consultar().subscribe(datos=>{
       for(let i=0;i<datos.length;i++){
         this.Lista2.push(datos[i]);
       }
       
-      ////
-    this.route.paramMap.subscribe(params=>{
+    /*En el fondo es un subscribe dentro de otro subscribe, es la unica forma 
+    en que logre que primero se llenara Lista2 con los datos del metodo GET
+    y despues se llenaran los datos del formulario con la informacion de la
+    nota respectiva */
+      this.route.paramMap.subscribe(params=>{
+          
+          let intento = params.get("id");
+          
+          if(intento!=null){
+            
+            this.idactual=+intento;
+            /*idactual toma el valor del id de la nota a editar  */
+            console.log("id de nota a editar " + this.idactual);
+            this.editar();
+          }
+        });
 
-        let intento = params.get("id");
-        let notaId = 0;
-        if(intento!=null){
-          notaId=+intento;
-          this.idactual=+intento;
-          console.log("id o algo  " + notaId);
-          this.editar(notaId);
-        }
-      });
-
-      ////
+      
       console.log("llenado lista2 "+datos);
     });
-    /*this.route.paramMap.subscribe(params=>{
-
-      let intento = params.get("id");
-      let notaId = 0;
-      if(intento!=null){
-        notaId=+intento;
-        this.idactual=+intento;
-        console.log("id o algo  " + notaId);
-        this.editar(notaId);
-      }
-    });*/
+    
     
   }
-  editar(id:number){
+  /*La funcion editar llena los input del formulario con informacion, que
+  es la informacion original de la nota que se quiere editar */
+  editar(){
     console.log("EDITAR");
-    console.log("LARGO LISTA  aa  "+this.Lista2.length);
+    //console.log("LARGO LISTA2 "+this.Lista2.length);
     for(let i=0; i< this.Lista2.length ;i++){
-      if(this.Lista2[i].id==id){
+      if(this.Lista2[i].id==this.idactual){
         this.formulario.patchValue({
           titulo: this.Lista2[i].titulo,
           estado: this.Lista2[i].estado,
@@ -87,7 +86,7 @@ export class EdnotasComponent implements OnInit {
     } 
   }
   Crear(){
-    console.log("largo lista 2 en crear "+this.Lista2.length);
+    
     var test: Notas = {
       id:this.idactual,
       titulo:this.titulo.value,
@@ -96,29 +95,22 @@ export class EdnotasComponent implements OnInit {
   
     };
     //console.log("impirme  "+this.estado.value);
-    
     //console.log("para id " + this.Lista2[0].id);
-    /*if(this.Lista2.length==0){
-      console.log('LISTA VACIA ')
-      
-    }
-    if(this.Lista2.length!=0){
-      for(let i=0; i < this.Lista2.length ;i++){
-        if(i == (this.Lista2.length-1)){
-          test.id=i+1;
-        }
-      }
-    }*/
     //console.log("test id = "+ test.id);
+
+
+    /*En eset caso se elimina la nota antigua de la lista 
+    y se reemplaza por la nueva */
     this.Lista2.forEach((item,index)=>{
       if(test.id==item.id){
         this.Lista2.splice(index,1,test);
       }
     })
-    //this.Lista2.push(test);
+   
+    /*Metodo POST , se envia la lista de notas completa */
     this.servicioNota.Guardar(this.Lista2).subscribe(datos=>{
       //console.log("lo que estoy recibiendo");  
-      console.log("RECIVO ESTOOOOO"+ datos);
+      console.log("Datos recibidos en edicion"+ datos);
     });
   
   }

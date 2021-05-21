@@ -22,7 +22,7 @@ export const ListaNotas:Array<Notas>=[
         id:2,
         titulo:"leer libro",
         estado:"cerrado",
-        descripcion:"Las aventuras de sssdsa d endsm dmesmadd endsmad edejnfs edadfemmff",
+        descripcion:"Las aventuras de",
     }
 ];
 */

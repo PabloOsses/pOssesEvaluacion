@@ -1,3 +1,5 @@
+<!--Pagina donde se edita una nota ya creada-->
+
 <form [formGroup]="formulario">
     <div id="caja0">
         <ul>
@@ -6,7 +8,7 @@
                 <input type="text" formControlName="titulo">
             </li>
             <li>
-                <label for="estados">Estado:</label>
+                <label for="estados">Estado</label>
 
                 <select name="estados" id="estados" formControlName="estado">
                     <option value="abierto">Abierto</option>
@@ -20,8 +22,9 @@
                 <textarea name="descripcion" maxlength="150" formControlName="descripcion"></textarea>
             </li>
             <li>
+                <!--Boton para actualizar nota -->
                 <a [routerLink]="['/misnotas']" routerLinkActive="router-link-active">
-                    <button type="submit" (click)="Crear()" mat-button color="accent">Actualizar</button>
+                    <button id="crear" type="submit" (click)="Crear()" mat-raised-button color="warn">Actualizar</button>
                 </a>
             </li>
         </ul>

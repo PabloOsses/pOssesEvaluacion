@@ -4,20 +4,54 @@ ul{
 }
 #cajaa{
     border-radius: 5px;
-    background-color: green;
+    background-color: burlywood;
     color: white;
     display: flex;
     flex-direction: row;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    width: 20%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 400px;
 }
 #titulo{
     font-size: large;
     
 }
 a{
-    color:white
+    color:white;
+    margin-right: 20px;
+    text-decoration:none
+}
+#cerrado{
+    background-color: green;
+    border-radius: 5px;
+    height: 100%;
+    margin-right: 5%;
+    width: 350px;
+}
+#abierto{
+    background-color: red;
+    border-radius: 5px;
+    height: 100%;
+    margin-right: 5%;
+    width: 350px;
+    
+}
+#proceso{
+    background-color: yellow;
+    border-radius: 5px;
+    height: 100%;
+    margin-right: 5%;
+    width: 350px;
+    color: black;
+    
+}
+ul div{
+    width: 100%;
+    
+}
+#delete{
+    margin-right: 5px;
+    position: relative;
 }

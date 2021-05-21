@@ -1,12 +1,13 @@
-<form [formGroup]="formulario">
+<!--Pagina inicial donde se crea una nota-->
+<form [formGroup]="formulario"  >
     <div id="caja0">
         <ul>
             <li>
                 <label for="titulo">Titulo</label>
-                <input type="text" formControlName="titulo">
+                <input type="text" formControlName="titulo" required>
             </li>
             <li>
-                <label for="estados">Estado:</label>
+                <label for="estados">Estado</label>
 
                 <select name="estados" id="estados" formControlName="estado">
                     <option value="abierto">Abierto</option>
@@ -17,11 +18,12 @@
             </li>
             <li>
                 <label for="descripcion">Descripcion</label>
-                <textarea name="descripcion" maxlength="150" formControlName="descripcion"></textarea>
+                <textarea name="descripcion" maxlength="150" formControlName="descripcion" required></textarea>
             </li>
             <li>
+                <!--Boton para crear nota -->
                 <a [routerLink]="['/misnotas']" routerLinkActive="router-link-active">
-                    <button type="submit" (click)="Crear()" mat-button color="accent">Actualizar</button>
+                    <button id="crear" type="submit"  (click)="Crear()" mat-raised-button color="warn">Crear nota</button>
                 </a>
             </li>
         </ul>
