@@ -6,7 +6,7 @@
   $json=file_get_contents('php://input');
  
   
-  file_put_contents("data-notas.json", $json);
+  file_put_contents("datos-notas.json", $json);
   /*Simplemente coloca los datos en el archivo json que esta en la misma carpeta*/
 
 ?>
